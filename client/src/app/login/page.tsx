@@ -1,4 +1,5 @@
 'use client';
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from 'next/navigation';
 import { useForm } from "react-hook-form";
@@ -63,6 +64,7 @@ function LoginForm() {
       </form>
 
       <Button variant="outline" className="w-full" onClick={() => { googleLogin.mutate(); }}>
+        <Image src="https://www.svgrepo.com/download/475656/google-color.svg" alt="Google" width={20} height={20} className="mr-2" />
         Login with Google
       </Button>
 
