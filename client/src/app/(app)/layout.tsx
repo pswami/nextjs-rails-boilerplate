@@ -29,8 +29,9 @@ export default function Layout({ children, }: { children: React.ReactNode }) {
         <div className="hidden border-r bg-muted/40 md:block">
           <Sidebar />
         </div>
+
         <div className="flex flex-col">
-          {/* Header + Sidebar (onMobile) */}
+          {/* Header + Sidebar (on mobile) */}
           <Navbar />
 
           {/* Main Content */}
