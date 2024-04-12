@@ -44,22 +44,6 @@ export default function AppSidebar(props: Props) {
           ))}
         </nav>
       </div>
-      <div className="mt-auto p-4">
-        <Card.Card x-chunk="dashboard-02-chunk-0">
-          <Card.CardHeader className="p-2 pt-0 md:p-4">
-            <Card.CardTitle>Upgrade to Pro</Card.CardTitle>
-            <Card.CardDescription>
-              Unlock all features and get unlimited access to our support
-              team.
-            </Card.CardDescription>
-          </Card.CardHeader>
-          <Card.CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-            <Button size="sm" className="w-full">
-              Upgrade
-            </Button>
-          </Card.CardContent>
-        </Card.Card>
-      </div>
     </div>
   );
 }
