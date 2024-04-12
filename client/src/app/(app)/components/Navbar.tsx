@@ -15,20 +15,22 @@ import * as Card from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useQueryClient } from "@tanstack/react-query";
-import { redirect, useRouter } from 'next/navigation';
+import { redirect, useRouter, usePathname } from 'next/navigation';
 import { useUser, useLogout } from '@/services/users';
 import { useCustomerPortal } from '@/services/stripe';
-
+import { routes } from "@/lib/navigation";
+import { cn } from "@/lib/utils";
 
 const i18n = {
   appName: 'AppName',
 };
 
 type Props = {
-  sidebarState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+  // sidebarState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
 };
 
 export default function AppNavbar(props: Props) {
+  const pathname = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
   // const [sidebarOpen, setSidebarOpen] = props.sidebarState;
@@ -69,44 +71,19 @@ export default function AppNavbar(props: Props) {
               <Icon.Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <Icon.Home className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-            >
-              <Icon.ShoppingCart className="h-5 w-5" />
-              Orders
-              <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                6
-              </Badge>
-            </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <Icon.Package className="h-5 w-5" />
-              Products
-            </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <Icon.Users className="h-5 w-5" />
-              Customers
-            </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <Icon.LineChart className="h-5 w-5" />
-              Analytics
-            </Link>
+
+            {Object.values(routes).map((route) => (
+              <Link
+                key={route.name}
+                href={route.href}
+                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                  { 'bg-muted text-primary': pathname === route.href }
+                )}
+              >
+                <route.icon className="h-4 w-4" />
+                {route.name}
+              </Link>
+            ))}
           </nav>
           <div className="mt-auto">
             <Card.Card>

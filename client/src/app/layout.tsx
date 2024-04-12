@@ -1,6 +1,5 @@
 "use client";
 import "@/styles/globals.css";
-import { ThemeModeScript } from 'flowbite-react';
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Inter as FontSans } from "next/font/google";

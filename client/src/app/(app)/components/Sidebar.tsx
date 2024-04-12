@@ -1,16 +1,19 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as Icon from "lucide-react";
 import * as Card from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import SearchBar from "./SearchBar";
-// import { useUser } from '@/services/users';
+import { routes } from "@/lib/navigation";
+import { cn } from "@/lib/utils";
 
 type Props = {
-  sidebarState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+  // sidebarState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
 };
 
 export default function AppSidebar(props: Props) {
+    const pathname = usePathname();
   // const [sidebarOpen, setSidebarOpen] = props.sidebarState;
 
   return (
@@ -27,44 +30,18 @@ export default function AppSidebar(props: Props) {
       </div>
       <div className="flex-1">
         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-          <Link
-            href="#"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-          >
-            <Icon.Home className="h-4 w-4" />
-            Dashboard
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-          >
-            <Icon.ShoppingCart className="h-4 w-4" />
-            Orders
-            {/* <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-              6
-            </Badge> */}
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
-          >
-            <Icon.Package className="h-4 w-4" />
-            Products{" "}
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-          >
-            <Icon.Users className="h-4 w-4" />
-            Customers
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-          >
-            <Icon.LineChart className="h-4 w-4" />
-            Analytics
-          </Link>
+          {Object.values(routes).map((route) => (
+            <Link
+              key={route.name}
+              href={route.href}
+              className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                { 'bg-muted text-primary': pathname === route.href }
+              )}
+            >
+              <route.icon className="h-4 w-4" />
+              {route.name}
+            </Link>
+          ))}
         </nav>
       </div>
       <div className="mt-auto p-4">
