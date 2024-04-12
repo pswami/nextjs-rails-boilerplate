@@ -7,20 +7,27 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CardContent, Card, CardHeader } from "@/components/ui/card";
-
+import { useToast } from "@/components/ui/use-toast";
 import { useUser, useUpdateUser } from '@/services/users';
-import * as toast from '@/services/toast';
 
 export default function Settings() {
   const { data: user, isLoading } = useUser();
   const generalInfoForm = useForm();
   const updateUser = useUpdateUser();
+  const { toast } = useToast();
 
   const onSubmitGeneralInfo = (data: any) => {
     updateUser.mutateAsync({ id: user!.id, payload: data }).then(() => {
-      toast.success('User updated');
+      toast({
+        title: 'Profile updated',
+        description: 'Your profile has been updated successfully',
+      })
     }).catch(() => {
-      toast.error('User update failed');
+      toast({
+        title: 'Error',
+        description: 'An error occurred while updating your profile',
+        variant: 'destructive',
+      })
     });
   };
 

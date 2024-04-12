@@ -7,22 +7,30 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import { useToast } from "@/components/ui/use-toast";
 import { useLogin, useGoogleLogin } from '@/services/users';
 
 function LoginForm() {
   const { register, handleSubmit } = useForm();
   const login = useLogin();
   const googleLogin = useGoogleLogin();
+  const { toast } = useToast();
 
   const onSubmit = async (data: any) => {
     try {
       const res = await login.mutateAsync(data).then((res) => {
-        // toast.success('Successfully logged in');
+        toast({
+          title: 'Login successful',
+          description: 'You have been logged in successfully',
+        })
         redirect('/home');
       });
     } catch (error) {
-      // toast.error('Login failed');
+      toast({
+        title: 'Error',
+        description: 'An error occurred while logging in',
+        variant: 'destructive',
+      })
     }
   };
 

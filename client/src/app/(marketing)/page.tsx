@@ -1,16 +1,11 @@
 'use client';
 import { Navbar, Button } from 'flowbite-react';
 import Link from "next/link";
-import { Toaster } from 'react-hot-toast';
 import * as Landing from './components/Landing';
 
 export default function Home() {
   return (
    <>
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false}
-      />
       {/* Navbar */}
       <Navbar fluid rounded theme={{ root: { base: 'bg-white px-2 py-2.5 dark:border-gray-700 dark:bg-gray-900 sm:px-4' }}}>
         <Navbar.Brand as={Link} href="/home">

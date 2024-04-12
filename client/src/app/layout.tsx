@@ -1,6 +1,7 @@
 "use client";
 import "@/styles/globals.css";
 import { useState } from "react";
+import { Toaster } from "@/components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable )}>
         <QueryClientProvider client={queryClient}>
           {children}
+          <Toaster />
         </QueryClientProvider>
       </body>
     </html>
