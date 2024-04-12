@@ -1,11 +1,24 @@
 "use client";
 import Link from "next/link";
-import { Avatar, Dropdown, Navbar, Button } from 'flowbite-react';
+import { Button } from "@/components/ui/button";
+import * as Icon from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import * as Dropdown from "@/components/ui/dropdown-menu";
+import * as Card from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { useQueryClient } from "@tanstack/react-query";
 import { redirect, useRouter } from 'next/navigation';
 import { useUser, useLogout } from '@/services/users';
 import { useCustomerPortal } from '@/services/stripe';
-import SearchBar from "./SearchBar";
+
 
 const i18n = {
   appName: 'AppName',
@@ -18,7 +31,7 @@ type Props = {
 export default function AppNavbar(props: Props) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [sidebarOpen, setSidebarOpen] = props.sidebarState;
+  // const [sidebarOpen, setSidebarOpen] = props.sidebarState;
   const { data: user, isLoading } = useUser();
   const q = useCustomerPortal();
   const logout = useLogout();
@@ -35,45 +48,112 @@ export default function AppNavbar(props: Props) {
   };
 
   return (
-    <Navbar fluid className="fixed z-30 w-full p-3 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex">
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="flex items-center justify-center mr-2 p-1 text-gray-600 rounded cursor-pointer  lg:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-          <span className="material-symbols-outlined"> menu </span>
-        </button>
-        <Navbar.Brand as={Link} href="/home" className="md:mr-32">
-          <img src="https://flowbite-admin-dashboard.vercel.app/images/logo.svg" className="mr-3 h-6 sm:h-9" alt={i18n.appName} />
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">{i18n.appName}</span>
-        </Navbar.Brand>
-
-        <div className="lg:w-96">
-          <SearchBar formClassName="hidden lg:block" />
-        </div>
-      </div>
-
-
-      <div className="flex md:order-2">
-        {user?.id ? (
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
-            }
+    <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="shrink-0 md:hidden"
           >
-            <Dropdown.Header>
-              <span className="block truncate text-sm font-medium">{user?.email}</span>
-            </Dropdown.Header>
-            <Dropdown.Item onClick={navToCustomerPortal}>Plan: {user.friendly_plan_name}</Dropdown.Item>
-            <Link href="/settings"><Dropdown.Item>Settings</Dropdown.Item></Link>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
-          </Dropdown>
-        ) : (
-          <Link href="/login">
-            <Button className="mr-2">Sign in</Button>
-          </Link>
-        )}
+            <Icon.Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle navigation menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="flex flex-col">
+          <nav className="grid gap-2 text-lg font-medium">
+            <Link
+              href="#"
+              className="flex items-center gap-2 text-lg font-semibold"
+            >
+              <Icon.Package2 className="h-6 w-6" />
+              <span className="sr-only">Acme Inc</span>
+            </Link>
+            <Link
+              href="#"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+            >
+              <Icon.Home className="h-5 w-5" />
+              Dashboard
+            </Link>
+            <Link
+              href="#"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+            >
+              <Icon.ShoppingCart className="h-5 w-5" />
+              Orders
+              <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                6
+              </Badge>
+            </Link>
+            <Link
+              href="#"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+            >
+              <Icon.Package className="h-5 w-5" />
+              Products
+            </Link>
+            <Link
+              href="#"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+            >
+              <Icon.Users className="h-5 w-5" />
+              Customers
+            </Link>
+            <Link
+              href="#"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+            >
+              <Icon.LineChart className="h-5 w-5" />
+              Analytics
+            </Link>
+          </nav>
+          <div className="mt-auto">
+            <Card.Card>
+              <Card.CardHeader>
+                <Card.CardTitle>Upgrade to Pro</Card.CardTitle>
+                <Card.CardDescription>
+                  Unlock all features and get unlimited access to our
+                  support team.
+                </Card.CardDescription>
+              </Card.CardHeader>
+              <Card.CardContent>
+                <Button size="sm" className="w-full">
+                  Upgrade
+                </Button>
+              </Card.CardContent>
+            </Card.Card>
+          </div>
+        </SheetContent>
+      </Sheet>
+      <div className="w-full flex-1">
+        <form>
+          <div className="relative">
+            <Icon.Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search products..."
+              className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+            />
+          </div>
+        </form>
       </div>
-    </Navbar>
+      <Dropdown.DropdownMenu>
+        <Dropdown.DropdownMenuTrigger asChild>
+          <Button variant="secondary" size="icon" className="rounded-full">
+            <Icon.CircleUser className="h-5 w-5" />
+            <span className="sr-only">Toggle user menu</span>
+          </Button>
+        </Dropdown.DropdownMenuTrigger>
+        <Dropdown.DropdownMenuContent align="end">
+          <Dropdown.DropdownMenuLabel>My Account</Dropdown.DropdownMenuLabel>
+          <Dropdown.DropdownMenuSeparator />
+          <Dropdown.DropdownMenuItem>Settings</Dropdown.DropdownMenuItem>
+          <Dropdown.DropdownMenuItem>Support</Dropdown.DropdownMenuItem>
+          <Dropdown.DropdownMenuSeparator />
+          <Dropdown.DropdownMenuItem onClick={handleLogout}>Logout</Dropdown.DropdownMenuItem>
+        </Dropdown.DropdownMenuContent>
+      </Dropdown.DropdownMenu>
+    </header>
   );
 }
