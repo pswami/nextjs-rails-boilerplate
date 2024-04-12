@@ -1,4 +1,4 @@
-import { Button } from 'flowbite-react';
+import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form';
 import { useAddSubscriber } from '@/services/subscribers';
 
