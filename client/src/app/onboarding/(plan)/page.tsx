@@ -1,17 +1,18 @@
 'use client';
-import { Button } from 'flowbite-react';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 
 import { useUser } from "@/services/users";
-
 
 export default function OnboardingPage() {
   const { register } = useFormContext();
   const router = useRouter();
   const { data: user, isLoading } = useUser();
 
-  const onNext = () => {
+  const onNext = (e) => {
+    e.preventDefault();
+
     router.push('/onboarding/details');
   };
 
@@ -45,7 +46,7 @@ export default function OnboardingPage() {
         </ul>
 
         <div className="flex justify-end pt-16 gap-2">
-          <Button size="md" color="blue" onClick={onNext}> Next </Button>
+          <Button onClick={onNext}> Next </Button>
         </div>
       </div>
     </div>

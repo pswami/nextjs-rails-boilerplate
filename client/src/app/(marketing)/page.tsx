@@ -1,6 +1,4 @@
 'use client';
-import { Navbar, Button } from 'flowbite-react';
-import Link from "next/link";
 import * as Landing from './components/Landing';
 import { MainNav } from './components/Navbar';
 
