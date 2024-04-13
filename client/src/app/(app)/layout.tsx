@@ -11,16 +11,19 @@ export default function Layout({ children, }: { children: React.ReactNode }) {
   const { data: user, isLoading: isUserLoading } = useUser();
 
   useEffect(() => {
-    if (user?.id === undefined) {
-      redirect("/login");
-    } else if (user) {
-      if (user.onboarding_completed_at === null) {
+    console.log(user, isUserLoading);
+    if (!isUserLoading) {
+      if (!user) {
+        redirect("/login");
+      } else if (user.onboarding_completed_at === null) {
         redirect("/onboarding");
       }
     }
-  }, [user]);
+  }, [user, isUserLoading]);
 
   if (isUserLoading) { return null; }
+
+  if (!user) { return null; }
 
   return (
     <>

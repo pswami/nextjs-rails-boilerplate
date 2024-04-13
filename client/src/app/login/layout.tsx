@@ -1,15 +1,21 @@
 "use client";
-
+import { useEffect } from "react";
 import Image from "next/image";
 import { redirect } from 'next/navigation'
 import { useUser } from "@/services/users";
 
 export default function AppLayout({ children, }: { children: React.ReactNode }) {
-  const { data: user, isLoading } = useUser();
+  const { data: user, isLoading: isUserLoading } = useUser();
 
-  if (user?.id) {
-    redirect("/home");
-  }
+  useEffect(() => {
+    if (!isUserLoading) {
+      if (user) {
+        redirect("/home");
+      }
+    }
+  }, [user, isUserLoading]);
+
+  if (isUserLoading) { return null; }
 
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
