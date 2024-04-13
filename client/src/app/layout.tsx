@@ -42,9 +42,8 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
             disableTransitionOnChange
           >
             {children}
+            <Toaster />
           </ThemeProvider>
-          {children}
-          <Toaster />
         </QueryClientProvider>
       </body>
     </html>
