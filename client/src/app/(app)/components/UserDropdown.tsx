@@ -14,7 +14,7 @@ export function UserDropdown() {
 
   const handleLogout = () => {
     logout.mutateAsync().then(() => {
-      setTimeout(() => { queryClient.setQueryData(['user'], null); }, 1000);
+      setTimeout(() => { queryClient.setQueryData(['user'], null); }, 100);
       router.push('/');
     });
   }
