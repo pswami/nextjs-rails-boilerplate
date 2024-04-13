@@ -1,7 +1,7 @@
 'use client';
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useLogin, useGoogleLogin } from '@/services/users';
 
 function LoginForm() {
+  const router = useRouter();
   const { register, handleSubmit } = useForm();
   const login = useLogin();
   const googleLogin = useGoogleLogin();
@@ -23,7 +24,7 @@ function LoginForm() {
           title: 'Login successful',
           description: 'You have been logged in successfully',
         })
-        redirect('/home');
+        router.push('/home');
       });
     } catch (error) {
       toast({

@@ -1,6 +1,6 @@
 import * as Icon from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import * as Dropdown from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,12 @@ import { useLogout } from '@/services/users';
 export function UserDropdown() {
   const queryClient = useQueryClient();
   const logout = useLogout();
+  const router = useRouter();
 
   const handleLogout = () => {
     logout.mutateAsync().then(() => {
       setTimeout(() => { queryClient.setQueryData(['user'], null); }, 1000);
-      redirect('/');
+      router.push('/');
     });
   }
 
