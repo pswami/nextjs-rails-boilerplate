@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import * as Dropdown from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useLogout } from '@/services/users';
+import { ThemeToggler } from "@/app/(app)/components/ThemeToggler";
 
 export function UserDropdown() {
   const queryClient = useQueryClient();
@@ -31,6 +32,8 @@ export function UserDropdown() {
         <Dropdown.DropdownMenuSeparator />
         <Dropdown.DropdownMenuItem>Settings</Dropdown.DropdownMenuItem>
         <Dropdown.DropdownMenuItem>Support</Dropdown.DropdownMenuItem>
+        <Dropdown.DropdownMenuSeparator />
+        <ThemeToggler />
         <Dropdown.DropdownMenuSeparator />
         <Dropdown.DropdownMenuItem onClick={handleLogout}>Logout</Dropdown.DropdownMenuItem>
       </Dropdown.DropdownMenuContent>

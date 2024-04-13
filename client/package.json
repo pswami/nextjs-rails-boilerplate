@@ -29,6 +29,7 @@
     "eslint": "8.44.0",
     "lucide-react": "^0.367.0",
     "next": "^14.2.0",
+    "next-themes": "^0.3.0",
     "postcss": "8.4.24",
     "query-string": "^8.1.0",
     "react": "18.2.0",
