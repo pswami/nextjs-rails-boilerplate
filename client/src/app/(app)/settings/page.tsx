@@ -45,7 +45,7 @@ export default function Settings() {
               width="96"
             />
             <div className="space-y-1">
-              <h1 className="text-2xl font-bold">Meadow Richardson</h1>
+              <h1 className="text-2xl font-bold">{user?.name}</h1>
               <Button size="sm">Change photo</Button>
             </div>
           </div>
