@@ -1,10 +1,13 @@
 "use client";
 import Link from "next/link";
-import { Avatar, Dropdown, Navbar, Button } from 'flowbite-react';
-import { useQueryClient } from "@tanstack/react-query";
-import { redirect, useRouter } from 'next/navigation';
-import { useUser, useLogout } from '@/services/users';
-import { useCustomerPortal } from '@/services/stripe';
+import { usePathname } from 'next/navigation';
+import { Button } from "@/components/ui/button";
+import * as Icon from "lucide-react";
+import * as Sheet from "@/components/ui/sheet";
+import { UserDropdown } from "../components/UserDropdown";
+// import { useCustomerPortal } from '@/services/stripe';
+import { routes } from "@/lib/navigation";
+import { cn } from "@/lib/utils";
 import SearchBar from "./SearchBar";
 
 const i18n = {
@@ -12,68 +15,67 @@ const i18n = {
 };
 
 type Props = {
-  sidebarState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+  // sidebarState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
 };
 
 export default function AppNavbar(props: Props) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const [sidebarOpen, setSidebarOpen] = props.sidebarState;
-  const { data: user, isLoading } = useUser();
-  const q = useCustomerPortal();
-  const logout = useLogout();
-
-  const handleLogout = () => {
-    logout.mutateAsync().then(() => {
-      router.push('/');
-      setTimeout(() => { queryClient.setQueryData(['user'], null); }, 1000);
-    });
-  }
-
-  const navToCustomerPortal = () => {
-    q.refetch();
-  };
+  const pathname = usePathname();
+  // const [sidebarOpen, setSidebarOpen] = props.sidebarState;
+  // const q = useCustomerPortal();
+  // const navToCustomerPortal = () => {
+  //   q.refetch();
+  // };
 
   return (
-    <Navbar fluid className="fixed z-30 w-full p-3 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex">
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="flex items-center justify-center mr-2 p-1 text-gray-600 rounded cursor-pointer  lg:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-          <span className="material-symbols-outlined"> menu </span>
-        </button>
-        <Navbar.Brand as={Link} href="/home" className="md:mr-32">
-          <img src="https://flowbite-admin-dashboard.vercel.app/images/logo.svg" className="mr-3 h-6 sm:h-9" alt={i18n.appName} />
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">{i18n.appName}</span>
-        </Navbar.Brand>
-
-        <div className="lg:w-96">
-          <SearchBar formClassName="hidden lg:block" />
-        </div>
-      </div>
-
-
-      <div className="flex md:order-2">
-        {user?.id ? (
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
-            }
+    <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+      {/* Sidebar Trigger */}
+      <Sheet.Sheet>
+        <Sheet.SheetTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="shrink-0 md:hidden"
           >
-            <Dropdown.Header>
-              <span className="block truncate text-sm font-medium">{user?.email}</span>
-            </Dropdown.Header>
-            <Dropdown.Item onClick={navToCustomerPortal}>Plan: {user.friendly_plan_name}</Dropdown.Item>
-            <Link href="/settings"><Dropdown.Item>Settings</Dropdown.Item></Link>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
-          </Dropdown>
-        ) : (
-          <Link href="/login">
-            <Button className="mr-2">Sign in</Button>
-          </Link>
-        )}
+            <Icon.Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle navigation menu</span>
+          </Button>
+        </Sheet.SheetTrigger>
+
+        {/* Sidebar Content */}
+        <Sheet.SheetContent side="left" className="flex flex-col">
+          {/* Nav Links */}
+          <nav className="grid gap-2 text-lg font-medium">
+            <Link
+              href="#"
+              className="flex items-center gap-2 text-lg font-semibold"
+            >
+              <Icon.Package2 className="h-6 w-6" />
+              <span className="sr-only">Acme Inc</span>
+            </Link>
+
+            {Object.values(routes).map((route) => (
+              <Link
+                key={route.name}
+                href={route.href}
+                className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                  { 'bg-muted text-primary': pathname === route.href }
+                )}
+              >
+                <route.icon className="h-4 w-4" />
+                {route.name}
+              </Link>
+            ))}
+          </nav>
+        </Sheet.SheetContent>
+      </Sheet.Sheet>
+
+      {/* Search Bard */}
+      <div className="w-full flex-1">
+        <SearchBar />
       </div>
-    </Navbar>
+
+      {/* User Dropdown */}
+      <UserDropdown />
+    </header>
   );
 }
